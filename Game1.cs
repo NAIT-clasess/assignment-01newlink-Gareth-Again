@@ -15,11 +15,15 @@ public class Game1 : Game
     Texture2D[] animatedSprites1;
     Texture2D spritesheet;
 
+    SpriteFont font;
+
     int counter;
     int activeFrame;
+    int toadMove;
     int counter2;
     int activeFrame2;
     int numFrames;
+    int toadetteMove;
 
     public Game1()
     {
@@ -51,6 +55,8 @@ public class Game1 : Game
         activeFrame2 = 0;
         numFrames = 4;
         counter2 = 0;
+
+        font = Content.Load<SpriteFont>("SansFont");
     }
 
     protected override void Update(GameTime gameTime)
@@ -71,6 +77,7 @@ public class Game1 : Game
             }
 
         }
+        toadMove++;
 
         counter2++;
         if (counter2 > 14)
@@ -83,7 +90,10 @@ public class Game1 : Game
                 activeFrame2 = 0;
             }
         }
-
+        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        {
+            toadetteMove++;
+        }
         base.Update(gameTime);
     }
 
@@ -97,12 +107,14 @@ public class Game1 : Game
         _spriteBatch.Draw(background, new Rectangle(0, 0, 1000, 562), Color.White);
         _spriteBatch.Draw(staticSprite, new Vector2(100, 100), Color.White);
 
-        _spriteBatch.Draw(animatedSprites1[activeFrame], new Rectangle (400, 100, 100, 105), Color.White);
+        _spriteBatch.Draw(animatedSprites1[activeFrame], new Rectangle (toadMove + 400, 100, 100, 105), Color.White);
 
         _spriteBatch.Draw(spritesheet, 
-        new Rectangle (550, 100, 160, 120), 
+        new Rectangle (550, 100-toadetteMove, 160, 120), 
         new Rectangle (activeFrame2 * 32, 0, 32, 24),
         Color.White);
+
+        _spriteBatch.DrawString(font, "Press Space to make Toadette go up", Vector2.Zero, Color.White);
 
         _spriteBatch.End();
 
