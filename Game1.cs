@@ -12,6 +12,14 @@ public class Game1 : Game
 
     Texture2D staticSprite;
     Texture2D background;
+    Texture2D[] animatedSprites1;
+    Texture2D spritesheet;
+
+    int counter;
+    int activeFrame;
+    int counter2;
+    int activeFrame2;
+    int numFrames;
 
     public Game1()
     {
@@ -34,6 +42,15 @@ public class Game1 : Game
         // TODO: use this.Content to load your game content here
         staticSprite = Content.Load<Texture2D>("Emil");
         background = Content.Load<Texture2D>("Replicant");
+
+        animatedSprites1 = new Texture2D[2];
+        animatedSprites1[0] = Content.Load<Texture2D>("ToadRun1");
+        animatedSprites1[1] = Content.Load<Texture2D>("ToadRun2");
+
+        spritesheet = Content.Load<Texture2D>("ToadetteSpinV2");
+        activeFrame2 = 0;
+        numFrames = 4;
+        counter2 = 0;
     }
 
     protected override void Update(GameTime gameTime)
@@ -42,9 +59,29 @@ public class Game1 : Game
             Exit();
 
         // TODO: Add your update logic here
-        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        counter++;
+        if (counter >14)
         {
-            Debug.WriteLine("Space key Pressed");
+            counter = 0;
+            activeFrame++;
+
+            if (activeFrame > animatedSprites1.Length - 1)
+            {
+                activeFrame = 0;
+            }
+
+        }
+
+        counter2++;
+        if (counter2 > 14)
+        {
+            counter2 = 0;
+            activeFrame2++;
+
+            if (activeFrame2 == numFrames)
+            {
+                activeFrame2 = 0;
+            }
         }
 
         base.Update(gameTime);
@@ -59,6 +96,13 @@ public class Game1 : Game
 
         _spriteBatch.Draw(background, new Rectangle(0, 0, 1000, 562), Color.White);
         _spriteBatch.Draw(staticSprite, new Vector2(100, 100), Color.White);
+
+        _spriteBatch.Draw(animatedSprites1[activeFrame], new Rectangle (400, 100, 100, 105), Color.White);
+
+        _spriteBatch.Draw(spritesheet, 
+        new Rectangle (550, 100, 160, 120), 
+        new Rectangle (activeFrame2 * 32, 0, 32, 24),
+        Color.White);
 
         _spriteBatch.End();
 
